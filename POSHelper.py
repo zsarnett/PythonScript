@@ -46,7 +46,7 @@ def login():
 def NoProductFound(driver, companySel, productCode, storeNum):
 
     #Navigate to search company product page
-    driver.get('https://pos.vioc.com/viocpos-cwa-maintenance/searchProduct.do?method=prepCompanyProductsSearch&mlev1=maintenance&mlev2=product&mlev3=srchCompProd')
+    driver.get(cfg.mysql['companyProductPage'])
 
     #Sets the company on the company product screen
     driver.find_element_by_name('compResourceId').send_keys(companySel)
@@ -80,7 +80,7 @@ def NoProductFound(driver, companySel, productCode, storeNum):
         return
 
     #navigate to search product page
-    driver.get("https://pos.vioc.com/viocpos-cwa-maintenance/searchProduct.do?method=prepSearchStoreProducts&mlev1=maintenance&mlev2=product&mlev3=srchStoreProd")
+    driver.get(cfg.mysql['storeProductPage'])
 
     #make tempstore variable, for editing
     tempStore = storeNum
@@ -160,7 +160,7 @@ def ActivateCode():
     driver = login()
 
     #Navigate to search store product page
-    driver.get("https://pos.vioc.com/viocpos-cwa-maintenance/searchProduct.do?method=prepSearchStoreProducts&mlev1=maintenance&mlev2=product&mlev3=srchStoreProd")
+    driver.get(cfg.mysql['storeProductPage'])
 
     for storeNum in storeNumArray:
         for productCode in productCodeArray:
@@ -216,7 +216,7 @@ def DeactivateCode():
     driver = login()
 
     #navigate to search store product page
-    driver.get("https://pos.vioc.com/viocpos-cwa-maintenance/searchProduct.do?method=prepSearchStoreProducts&mlev1=maintenance&mlev2=product&mlev3=srchStoreProd")
+    driver.get(cfg.mysql['storeProductPage'])
 
     for storeNum in storeNumArray:
         for productCode in productCodeArray:
@@ -286,7 +286,7 @@ def PAXActivation():
     driver = login()
 
     #navigate to store system parameters page
-    driver.get("https://pos.vioc.com/viocpos-cwa-admin/srchStoreSysParam.do?method=prepStoreSysParamSearch&mlev1=administration&mlev2=systemparameters&mlev3=stsystemparameters")
+    driver.get(cfg.mysql['storeSystemParamPage'])
 
     for store in stores:
 
@@ -324,3 +324,9 @@ def PAXActivation():
     main()
 
 main()
+
+# TODO: Add Merchant Number finder
+    #Store Resource ID for franchises
+    #reset employee Password
+    #propatgate employee and send to store
+    #Reset employee A-ID Password
