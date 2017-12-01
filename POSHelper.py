@@ -9,7 +9,7 @@ logging.basicConfig(filename='debug.log')
 
 #main function for main prompt
 def main():
-    print("Welcome to the POS helper!")
+    print("Welcome to the POS helper!\n")
     print("1. Store Product Activation")
     print("2. Store Product Deactivation")
     print("3. Activate PAX")
@@ -17,13 +17,13 @@ def main():
     choice = input("Selection: ")
 
     if choice == '1':
-        print("Product Activation:")
+        print("\nProduct Activation:")
         ActivateCode()
     if choice == '2':
-        print("Product Deactivation:")
+        print("\nProduct Deactivation:")
         DeactivateCode()
     if choice == '3':
-        print("Activate PAX:")
+        print("\nActivate PAX:")
         PAXActivation()
 
 #Login function - Loads POS page for login and uses Username and Password Variables as set for login - returns driver made
@@ -77,6 +77,7 @@ def NoProductFound(driver, companySel, productCode, storeNum):
     #if companyActive flag is off, the product is not active at the company and therefore can not be activated
     if companyActive == False:
         print('Product not active at company!')
+        print("Product not activated...")
         return
 
     #navigate to search product page
@@ -116,7 +117,8 @@ def NoProductFound(driver, companySel, productCode, storeNum):
 
         #if not found and tempstore is 1 char, then the product is not active at any store of the company
         elif active == False & len(tempStore) == 1:
-            print("Product not found at any store")
+            print("Product not found at any store!")
+            print("Product not activated...")
             break
 
         #else it was found start Add like code
@@ -150,11 +152,15 @@ def NoProductFound(driver, companySel, productCode, storeNum):
 #and then trys to add like the product from another store
 def ActivateCode():
 
-    storeNum = input("What store(s)? (Delimit using commas (,)): ")
-    productCode = input("What Product(s)? (Delimit using commas (,)): ")
-    companySel = input("Company?(3 char prefix): ")
+    storeNum = input("What store(s)? (Seperate using commas ','): ")
+    productCode = input("What Product(s)? (Seperate using commas ','): ")
+    companySel = input("Company? (3 char prefix): ")
+
+    storeNum.replace(" ", "")
     storeNumArray = storeNum.split(',')
+    productCode.replace(" ", "")
     productCodeArray = productCode.split(',')
+    companySel.replace(" ", "")
 
     #call login function
     driver = login()
@@ -180,7 +186,7 @@ def ActivateCode():
             product.send_keys(Keys.ENTER)
 
             #Information on product for visual purposes
-            print("-------------------------")
+            print("----------------------------------")
             print("Product Code: " + productCode)
             print("Store Number: " + storeNum)
             print("Company: " + companySel)
@@ -199,18 +205,22 @@ def ActivateCode():
                 #if unable to activate, call no product found function
                 NoProductFound(driver, companySel, productCode, storeNum)
 
-            time.sleep(1)
-            print()
+            driver.quit()
+            print("----------------------------------\n")
             main()
 
 #Deactivates given code from given store(s)
 def DeactivateCode():
 
-    storeNum = input("What store(s)? (Delimit using commas (,)): ")
-    productCode = input("What Product(s)? (Delimit using commas (,)): ")
+    storeNum = input("What store(s)? (Seperate using commas ','): ")
+    productCode = input("What Product(s)? (Seperate using commas ','): ")
     companySel = input("Company?(3 char prefix): ")
+
+    storeNum.replace(" ", "")
     storeNumArray = storeNum.split(',')
+    productCode.replace(" ", "")
     productCodeArray = productCode.split(',')
+    companySel.replace(" ", "")
 
     #login and store driver variable
     driver = login()
@@ -247,13 +257,13 @@ def DeactivateCode():
 
                 #click deactivate button
                 driver.find_element_by_name('method.prepDeactivateStoreProducts').click()
-                print("Successfully Deactivated")
+                print("Successfully Deactivated!")
             except NoSuchElementException:
                 print("Product Not found!")
+                print("Product not Deactivated...")
 
-            time.sleep(1)
             driver.quit()
-            print()
+            print("----------------------------------\n")
             main()
 
 #needs Work - Allocates employees
@@ -279,7 +289,9 @@ def Allocation():
 #function to activate Accept Debit Cards and CC_SEMI_INTEGRATED Paramaters at given stores
 def PAXActivation():
 
-    storeNum = input("Store Number(s) (delimit by comma ','): ")
+    storeNum = input("Store Number(s) (Seperate using commas ','): ")
+
+    storeNum.replace(" ", "")
     stores = storeNum.split(',')
 
     #login
@@ -304,6 +316,9 @@ def PAXActivation():
         param.clear()
         param.send_keys("Y" + Keys.ENTER)
 
+        #Tell user param was Successful
+        print("Accept_Debit_Cards Parameter set to Y")
+
         #Navigate back one page
         driver.execute_script("history.go(-1)")
         driver.back()
@@ -316,11 +331,18 @@ def PAXActivation():
         param.clear()
         param.send_keys("Y" + Keys.ENTER)
 
+        #Tell user param was Successful
+        print("CC_SEMI_INTEGRATED Parameter set to Y")
+
         #navigate back one page
         driver.execute_script("history.go(-1)")
         driver.back()
 
-    print()
+        #Tell user which store and if Successfull
+        print(store + " Successfully activated for PAX")
+
+    driver.quit()
+    print("----------------------------------\n")
     main()
 
 main()
@@ -330,3 +352,4 @@ main()
     #reset employee Password
     #propatgate employee and send to store
     #Reset employee A-ID Password
+    #take out white space
