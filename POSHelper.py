@@ -9,22 +9,28 @@ logging.basicConfig(filename='debug.log')
 
 #main function for main prompt
 def main():
-    print("Welcome to the POS helper!\n")
-    print("1. Store Product Activation")
-    print("2. Store Product Deactivation")
-    print("3. Activate PAX")
-    print("----------------------------------")
-    choice = input("Selection: ")
+    while 1:
+        print("Welcome to the POS helper!\n")
+        print("1. Store Product Activation")
+        print("2. Store Product Deactivation")
+        print("3. Activate PAX")
+        print("----------------------------------")
+        choice = input("Selection: ")
 
-    if choice == '1':
-        print("\nProduct Activation:")
-        ActivateCode()
-    if choice == '2':
-        print("\nProduct Deactivation:")
-        DeactivateCode()
-    if choice == '3':
-        print("\nActivate PAX:")
-        PAXActivation()
+        if choice == '1':
+            print("\nProduct Activation:")
+            ActivateCode()
+        if choice == '2':
+            print("\nProduct Deactivation:")
+            DeactivateCode()
+        if choice == '3':
+            print("\nActivate PAX:")
+            PAXActivation()
+        if choice == 'q':
+            return
+        else:
+            print()
+            continue
 
 #Login function - Loads POS page for login and uses Username and Password Variables as set for login - returns driver made
 def login():
@@ -165,11 +171,11 @@ def ActivateCode():
     #call login function
     driver = login()
 
-    #Navigate to search store product page
-    driver.get(cfg.mysql['storeProductPage'])
-
     for storeNum in storeNumArray:
         for productCode in productCodeArray:
+
+            #Navigate to search store product page
+            driver.get(cfg.mysql['storeProductPage'])
 
             #Sets the company on the store product screen
             driver.find_element_by_name('compResourceId').send_keys(companySel)
@@ -199,15 +205,15 @@ def ActivateCode():
                 print("Successfully Activated")
             except NoSuchElementException:
                 active = False
-                print("Product Not found at store!")
+                print("Product not found at store!")
 
             if active == False:
                 #if unable to activate, call no product found function
                 NoProductFound(driver, companySel, productCode, storeNum)
 
-            driver.quit()
-            print("----------------------------------\n")
-            main()
+    driver.quit()
+    print("----------------------------------\n")
+    return
 
 #Deactivates given code from given store(s)
 def DeactivateCode():
@@ -264,7 +270,7 @@ def DeactivateCode():
 
             driver.quit()
             print("----------------------------------\n")
-            main()
+            return
 
 #needs Work - Allocates employees
 def Allocation():
@@ -299,6 +305,8 @@ def PAXActivation():
 
     #navigate to store system parameters page
     driver.get(cfg.mysql['storeSystemParamPage'])
+
+    print("-------------------------")
 
     for store in stores:
 
@@ -339,11 +347,11 @@ def PAXActivation():
         driver.back()
 
         #Tell user which store and if Successfull
-        print(store + " Successfully activated for PAX")
+        print(store + " Successfully activated for PAX\n")
 
     driver.quit()
     print("----------------------------------\n")
-    main()
+    return
 
 main()
 
