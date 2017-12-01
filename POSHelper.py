@@ -1,10 +1,8 @@
-import time
-import selenium
+import time, selenium, logging
 import config as cfg
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.common.exceptions import NoSuchElementException
-import logging
 logging.basicConfig(filename='debug.log')
 
 #main function for main prompt
@@ -162,10 +160,8 @@ def ActivateCode():
     productCode = input("What Product(s)? (Seperate using commas ','): ")
     companySel = input("Company? (3 char prefix): ")
 
-    storeNum.replace(" ", "")
-    storeNumArray = storeNum.split(',')
-    productCode.replace(" ", "")
-    productCodeArray = productCode.split(',')
+    storeNumArray = storeNum.replace(" ", "").split(',')
+    productCodeArray = productCode.replace(" ", "").split(',')
     companySel.replace(" ", "")
 
     #call login function
@@ -222,10 +218,8 @@ def DeactivateCode():
     productCode = input("What Product(s)? (Seperate using commas ','): ")
     companySel = input("Company?(3 char prefix): ")
 
-    storeNum.replace(" ", "")
-    storeNumArray = storeNum.split(',')
-    productCode.replace(" ", "")
-    productCodeArray = productCode.split(',')
+    storeNumArray = storeNum.replace(" ", "").split(',')
+    productCodeArray = productCode.replace(" ", "").split(',')
     companySel.replace(" ", "")
 
     #login and store driver variable
@@ -297,8 +291,7 @@ def PAXActivation():
 
     storeNum = input("Store Number(s) (Seperate using commas ','): ")
 
-    storeNum.replace(" ", "")
-    stores = storeNum.split(',')
+    stores = storeNum.replace(" ", "").split(',')
 
     #login
     driver = login()
@@ -360,4 +353,3 @@ main()
     #reset employee Password
     #propatgate employee and send to store
     #Reset employee A-ID Password
-    #take out white space
