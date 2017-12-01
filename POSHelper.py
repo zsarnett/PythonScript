@@ -32,7 +32,7 @@ def login():
     driver = webdriver.Chrome(cfg.mysql['driverPath'])
 
     #first load POS login page
-    driver.get('https://pos.vioc.com/');
+    driver.get(cfg.mysql['posLoginPage']);
 
     #send username to username field
     driver.find_element_by_name('userId').send_keys(cfg.mysql['user'])
