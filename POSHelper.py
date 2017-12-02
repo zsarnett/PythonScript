@@ -262,9 +262,9 @@ def DeactivateCode():
                 print("Product Not found!")
                 print("Product not Deactivated...")
 
-            driver.quit()
-            print("----------------------------------\n")
-            return
+    driver.quit()
+    print("----------------------------------\n")
+    return
 
 #needs Work - Allocates employees
 def Allocation():
